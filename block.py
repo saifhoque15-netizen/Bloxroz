@@ -108,3 +108,8 @@ class Block:
 
             self.pos1 = (r2 + 1, c1)
             self.pos2 = (r2 + 1, c1)
+
+
+    def get_state(self):
+
+        return (self.pos1, self.pos2)

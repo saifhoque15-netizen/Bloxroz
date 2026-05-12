@@ -91,8 +91,22 @@
 
 from game import Game
 from level import LEVELS
-
+from solver import bfs
 
 game = Game(LEVELS)
 
-game.play()
+# game.play()
+
+for i in range(len(LEVELS)):
+
+    game.current_level = i
+
+    game.load_level()
+
+    print("Level", i + 1)
+
+    solution = bfs(game.board, game.block)
+
+    print(solution)
+    
+
