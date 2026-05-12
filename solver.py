@@ -9,6 +9,7 @@ def bfs(board, block):
     visited = set()
 
     start_state = block.get_state()
+   
 
     queue.append((block, []))
 
@@ -28,7 +29,7 @@ def bfs(board, block):
         current_state = current_block.get_state()
 
         if board.is_win(current_block):
-            print("Solution Found:", path)
+            # print("Solution Found:", path)
             print("States Explored:", explored_states)
             print("Max Depth:", max_depth)
             end_time = time.time()
@@ -37,7 +38,8 @@ def bfs(board, block):
 
         for move_name, (dr, dc) in moves.items():
 
-            new_block = copy.deepcopy(current_block)
+            # new_block = copy.deepcopy(current_block)
+            new_block=current_block.copy()    
 
             if move_name == "u":
                 new_block.move_up()
