@@ -61,6 +61,9 @@ python main.py
 ### BFS
 Breadth First Search is used to find the shortest path to the goal.
 
+### DFS 
+Depth Fisrt Search is used to find the goal in short time than BFS.
+
 ### A*
 A* Search uses heuristics to optimize pathfinding.
 
