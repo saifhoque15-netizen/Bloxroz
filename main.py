@@ -1,125 +1,56 @@
-# from board import Board
-
-
-# board_data = [
-#     [1, 1, 1],
-#     [1, 2, 1],
-#     [1, 1, 9]
-# ]
-
-
-# board = Board(board_data)
-
-# board.display()
-
-
-# start = board.find_start()
-
-# print(start)
-
-
-
-
-
-# from block import Block
-# block = Block(start)
-
-# block.display()
-
-
-# print(block.get_orientation())
-
-# # block.move_right()
-
-# # block.display()
-
-# # print(block.get_orientation())
-
-
-
-# # block.move_right()
-# # block.move_right()
-
-# # block.display()
-
-# # print(block.get_orientation())
-
-
-
-
-# block.move_left()
-# block.move_left()
-
-# block.display()
-
-# print(block.get_orientation())
-
-
-
-# # block.move_down()
-
-# # block.display()
-
-# # print(block.get_orientation())
-
-# print(board.is_valid_block(block))
-
-
-# print(board.is_win(block))
-
-
-
-
-# from game import Game
-
-
-# board_data = [
-#     [1,1,1,1,1],
-#     [1,1,1,1,1],
-#     [1,1,2,1,1],
-#     [1,1,1,1,9],
-#     [1,1,1,1,1]
-# ]
-
-# game = Game(board_data)
-
-
-# game.play()
-
-
-
-
 from game import Game
 from level import LEVELS
-
 from solver import bfs, dfs
+
+import matplotlib.pyplot as plt
 
 
 game = Game(LEVELS)
 
-# game.play()
+# ─────────────────────────────
+# STORE TIMES
+# ─────────────────────────────
+
+bfs_times = []
+dfs_times = []
+
+level_names = []
+
+# ─────────────────────────────
+# RUN ALL LEVELS
+# ─────────────────────────────
 
 for i in range(len(LEVELS)):
+
+    print("\n========================")
+    print("LEVEL", i + 1)
+    print("========================\n")
 
     game.current_level = i
 
     game.load_level()
 
-    print("\n========================")
-    print("LEVEL", i + 1)
-    print("========================")
-
+    level_names.append(f"Level {i+1}")
 
     # ─────────────────────────────
     # BFS
     # ─────────────────────────────
 
-    print("\nRunning BFS...\n")
+    print("Running BFS...\n")
 
-    bfs_solution = bfs(game.board, game.block)
+    bfs_result = bfs(game.board, game.block)
 
-    print("BFS Path:", bfs_solution)
+    if bfs_result is not None:
 
+        print("BFS Path:", bfs_result["path"])
+
+        bfs_times.append(bfs_result["time"])
+
+    else:
+
+        print("BFS could not solve this level")
+
+        bfs_times.append(0)
 
     # ─────────────────────────────
     # DFS
@@ -129,10 +60,46 @@ for i in range(len(LEVELS)):
 
     print("\nRunning DFS...\n")
 
-    dfs_solution = dfs(game.board, game.block)
+    dfs_result = dfs(game.board, game.block)
 
-    print("DFS Path:", dfs_solution)
+    if dfs_result is not None:
 
+        print("DFS Path:", dfs_result["path"])
+
+        dfs_times.append(dfs_result["time"])
+
+    else:
+
+        print("DFS could not solve this level")
+
+        dfs_times.append(0)
+
+
+# ─────────────────────────────
+# TIME COMPARISON GRAPH
+# ─────────────────────────────
+
+plt.figure(figsize=(10,5))
+
+x = range(len(level_names))
+
+plt.plot(x, bfs_times, marker='o', label="BFS")
+
+plt.plot(x, dfs_times, marker='o', label="DFS")
+
+plt.xticks(x, level_names)
+
+plt.xlabel("Levels")
+
+plt.ylabel("Time (ms)")
+
+plt.title("BFS vs DFS Time Comparison")
+
+plt.legend()
+
+plt.grid(True)
+
+plt.show()
 
     
 
