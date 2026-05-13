@@ -91,7 +91,9 @@
 
 from game import Game
 from level import LEVELS
-from solver import bfs
+
+from solver import bfs, dfs
+
 
 game = Game(LEVELS)
 
@@ -103,10 +105,34 @@ for i in range(len(LEVELS)):
 
     game.load_level()
 
-    print("Level", i + 1)
+    print("\n========================")
+    print("LEVEL", i + 1)
+    print("========================")
 
-    solution = bfs(game.board, game.block)
 
-    print(solution)
+    # ─────────────────────────────
+    # BFS
+    # ─────────────────────────────
+
+    print("\nRunning BFS...\n")
+
+    bfs_solution = bfs(game.board, game.block)
+
+    print("BFS Path:", bfs_solution)
+
+
+    # ─────────────────────────────
+    # DFS
+    # ─────────────────────────────
+
+    game.load_level()
+
+    print("\nRunning DFS...\n")
+
+    dfs_solution = dfs(game.board, game.block)
+
+    print("DFS Path:", dfs_solution)
+
+
     
 
