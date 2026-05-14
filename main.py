@@ -1,24 +1,41 @@
 from game import Game
 from level import LEVELS
-from solver import bfs, dfs
+
+from solver import (
+    bfs,
+    dfs,
+    astar,
+    heuristic_manhattan,
+    heuristic_euclidean,
+    heuristic_weighted
+)
 
 import matplotlib.pyplot as plt
 
 
 game = Game(LEVELS)
 
-# ─────────────────────────────
+
+# ─────────────────────────────────────────────
 # STORE TIMES
-# ─────────────────────────────
+# ─────────────────────────────────────────────
 
 bfs_times = []
+
 dfs_times = []
+
+manhattan_times = []
+
+euclidean_times = []
+
+weighted_times = []
 
 level_names = []
 
-# ─────────────────────────────
+
+# ─────────────────────────────────────────────
 # RUN ALL LEVELS
-# ─────────────────────────────
+# ─────────────────────────────────────────────
 
 for i in range(len(LEVELS)):
 
@@ -31,6 +48,7 @@ for i in range(len(LEVELS)):
     game.load_level()
 
     level_names.append(f"Level {i+1}")
+
 
     # ─────────────────────────────
     # BFS
@@ -48,9 +66,10 @@ for i in range(len(LEVELS)):
 
     else:
 
-        print("BFS could not solve this level")
+        print("No BFS solution")
 
         bfs_times.append(0)
+
 
     # ─────────────────────────────
     # DFS
@@ -70,22 +89,134 @@ for i in range(len(LEVELS)):
 
     else:
 
-        print("DFS could not solve this level")
+        print("No DFS solution")
 
         dfs_times.append(0)
 
 
-# ─────────────────────────────
-# TIME COMPARISON GRAPH
-# ─────────────────────────────
+    # ─────────────────────────────
+    # A* MANHATTAN
+    # ─────────────────────────────
 
-plt.figure(figsize=(10,5))
+    game.load_level()
+
+    print("\nRunning A* Manhattan...\n")
+
+    result1 = astar(
+        game.board,
+        game.block,
+        heuristic_manhattan
+    )
+
+    if result1 is not None:
+
+        print("A* Manhattan Path:", result1["path"])
+
+        manhattan_times.append(result1["time"])
+
+    else:
+
+        print("No Manhattan solution")
+
+        manhattan_times.append(0)
+
+
+    # ─────────────────────────────
+    # A* EUCLIDEAN
+    # ─────────────────────────────
+
+    game.load_level()
+
+    print("\nRunning A* Euclidean...\n")
+
+    result2 = astar(
+        game.board,
+        game.block,
+        heuristic_euclidean
+    )
+
+    if result2 is not None:
+
+        print("A* Euclidean Path:", result2["path"])
+
+        euclidean_times.append(result2["time"])
+
+    else:
+
+        print("No Euclidean solution")
+
+        euclidean_times.append(0)
+
+
+    # ─────────────────────────────
+    # A* WEIGHTED
+    # ─────────────────────────────
+
+    game.load_level()
+
+    print("\nRunning A* Weighted...\n")
+
+    result3 = astar(
+        game.board,
+        game.block,
+        heuristic_weighted
+    )
+
+    if result3 is not None:
+
+        print("A* Weighted Path:", result3["path"])
+
+        weighted_times.append(result3["time"])
+
+    else:
+
+        print("No Weighted solution")
+
+        weighted_times.append(0)
+
+
+# ─────────────────────────────────────────────
+# GRAPH
+# ─────────────────────────────────────────────
+
+plt.figure(figsize=(12,6))
 
 x = range(len(level_names))
 
-plt.plot(x, bfs_times, marker='o', label="BFS")
+plt.plot(
+    x,
+    bfs_times,
+    marker='o',
+    label="BFS"
+)
 
-plt.plot(x, dfs_times, marker='o', label="DFS")
+plt.plot(
+    x,
+    dfs_times,
+    marker='o',
+    label="DFS"
+)
+
+plt.plot(
+    x,
+    manhattan_times,
+    marker='o',
+    label="A* Manhattan"
+)
+
+plt.plot(
+    x,
+    euclidean_times,
+    marker='o',
+    label="A* Euclidean"
+)
+
+plt.plot(
+    x,
+    weighted_times,
+    marker='o',
+    label="A* Weighted"
+)
 
 plt.xticks(x, level_names)
 
@@ -93,7 +224,7 @@ plt.xlabel("Levels")
 
 plt.ylabel("Time (ms)")
 
-plt.title("BFS vs DFS Time Comparison")
+plt.title("Search Algorithm Comparison")
 
 plt.legend()
 
