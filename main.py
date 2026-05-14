@@ -232,5 +232,66 @@ plt.grid(True)
 
 plt.show()
 
+
+# ─────────────────────────────────────────────
+# AVERAGE TIMES
+# ─────────────────────────────────────────────
+
+average_bfs = sum(bfs_times) / len(bfs_times)
+
+average_dfs = sum(dfs_times) / len(dfs_times)
+
+average_manhattan = sum(manhattan_times) / len(manhattan_times)
+
+average_euclidean = sum(euclidean_times) / len(euclidean_times)
+
+average_weighted = sum(weighted_times) / len(weighted_times)
+
+
+print("\n========================")
+print("AVERAGE RESULTS")
+print("========================")
+
+print("BFS Average Time         :", average_bfs, "ms")
+
+print("DFS Average Time         :", average_dfs, "ms")
+
+print("A* Manhattan Average    :", average_manhattan, "ms")
+
+print("A* Euclidean Average    :", average_euclidean, "ms")
+
+print("A* Weighted Average     :", average_weighted, "ms")
+
+
+algorithms = [
+    "BFS",
+    "DFS",
+    "A* Manhattan",
+    "A* Euclidean",
+    "A* Weighted"
+]
+
+times = [
+    average_bfs,
+    average_dfs,
+    average_manhattan,
+    average_euclidean,
+    average_weighted
+]
+
+plt.figure(figsize=(10,5))
+
+plt.bar(algorithms, times)
+
+plt.xlabel("Algorithms")
+
+plt.ylabel("Average Time (ms)")
+
+plt.title("Average Algorithm Comparison")
+
+plt.grid(True)
+
+plt.show()
+
     
 
